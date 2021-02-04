@@ -12,6 +12,9 @@ namespace ReCapProject.ConsoleUI
         static void Main(string[] args)
         {
             CarManager carManager = new CarManager(new InMemoryCarDal());
+
+
+
             Console.WriteLine("Araç ID'si, Marka, RenkID'si, Model, StokAdedi, Günlük Satış, Tip, Açıklama");
             foreach (var car in carManager.GetAll())
             {
@@ -21,11 +24,15 @@ namespace ReCapProject.ConsoleUI
 
             Console.WriteLine("Araç Markaları-------");
 
+            
+            
             foreach (var car in carManager.GetByBrandId(2))
             {
                 Console.WriteLine("CarId :{0} --BrandId :{1} --Type :{2}", car.CarId, car.BrandId, car.Description);
             }
             Console.WriteLine("**********************************************");
+
+
 
             Console.WriteLine("Araç Renkleri ----");
             foreach (var car in carManager.GetByColorId(2))
