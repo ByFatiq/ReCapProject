@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Entities.Concrete
 {
-    public class Car : IEntity
+    public class CarJoin : IEntity
     {
         public int CarId { get; set; }
-        public int BrandId { get; set; }
-        public int ColorId { get; set; }
+        public string ColorName { get; set; }
+        public string BrandName { get; set; }
         public short ModelYear { get; set; }
         public decimal DailyPrice { get; set; }
         public string CarDescription { get; set; }

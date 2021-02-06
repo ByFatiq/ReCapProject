@@ -1,14 +1,13 @@
-﻿using System;
+﻿using Entities.Concrete;
 using System.Collections.Generic;
-using System.Text;
-using ReCapProject.Entities.Concrete;
 
-namespace ReCapProject.Business.Abstract
+namespace Business.Abstract
 {
     public interface ICarService
     {
-        List<Car> GetAll();
-        List<Car> GetByBrandId(int brandId);
+        List<CarJoin> GetAll();
         List<Car> GetByColorId(int colorId);
+        List<Car> GetByBrandId(int brandId);
+        CarJoin GetByCarId(int carId);
     }
 }

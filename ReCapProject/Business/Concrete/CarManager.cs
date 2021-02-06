@@ -1,34 +1,111 @@
-﻿using System;
+﻿using Business.Abstract;
+using DataAccess.Abstract;
+using Entities.Concrete;
+using System;
 using System.Collections.Generic;
-using System.Text;
-using ReCapProject.Business.Abstract;
-using ReCapProject.DataAccess.Abstract;
-using ReCapProject.Entities.Concrete;
+using System.Linq;
 
-namespace ReCapProject.Business.Concrete
+namespace Business.Concrete
 {
-    public class CarManager : ICarService
+    public class CarManager : IBaseService<Car>, ICarService
     {
         ICarDal _carDal;
+        IColorDal _ColorDal;
+        IBrandDal _brandDal;
+
         public CarManager(ICarDal carDal)
         {
             _carDal = carDal;
         }
-        public List<Car> GetAll()
+        public CarManager(ICarDal carDal, IColorDal ColorDal, IBrandDal brandDal)
         {
-            return _carDal.GetAll();
+            _carDal = carDal;
+            _ColorDal = ColorDal;
+            _brandDal = brandDal;
+        }
+
+        public void Add(Car item)
+        {
+            if (item.CarDescription.Length >= 2)
+            {
+                if (item.DailyPrice > 0)
+                {
+                    _carDal.Add(item);
+                }
+                else
+                {
+                    Console.WriteLine("[Daily Price] must be bigger then 0");
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("[Description] must be min length 2");
+            }
+        }
+
+        public void Delete(Car item)
+        {
+            _carDal.Delete(item);
+        }
+
+        public List<CarJoin> GetAll()
+        {
+            return (from c in _carDal.GetAll()
+                    join cc in _ColorDal.GetAll() on c.ColorId equals cc.ColorId
+                    join b in _brandDal.GetAll() on c.BrandId equals b.BrandId
+                    select new CarJoin { CarId = c.CarId, ColorName = cc.ColorName, BrandName = b.BrandName, ModelYear = c.ModelYear, DailyPrice = c.DailyPrice, CarDescription = c.CarDescription }).ToList();
         }
 
         public List<Car> GetByBrandId(int brandId)
         {
-            return _carDal.GetByBrandId(brandId);
+            return _carDal.GetAll().Where(cc => cc.BrandId == brandId).ToList();
+        }
+
+        public CarJoin GetByCarId(int carId)
+        {
+            var data = (from c in _carDal.GetAll()
+                        join cc in _ColorDal.GetAll() on c.ColorId equals cc.ColorId
+                        join b in _brandDal.GetAll() on c.BrandId equals b.BrandId
+                        where c.CarId == carId
+                        select new CarJoin
+                        {
+                            CarId = c.CarId,
+                            ColorName = cc.ColorName,
+                            BrandName = b.BrandName,
+                            ModelYear = c.ModelYear,
+                            DailyPrice = c.DailyPrice,
+                            CarDescription = c.CarDescription
+                        }).First();
+
+
+            return data;
         }
 
         public List<Car> GetByColorId(int colorId)
         {
-            return _carDal.GetByColorId(colorId);
+            return _carDal.GetAll(cc => colorId == cc.ColorId);
         }
 
+        public void Update(Car item)
+        {
+            if (item.CarDescription.Length >= 2)
+            {
+                if (item.DailyPrice > 0)
+                {
+                    _carDal.Update(item);
+                }
+                else
+                {
+                    Console.WriteLine("[Daily Price] must be bigger then 0");
+                }
 
+            }
+            else
+            {
+                Console.WriteLine("[Description] must be min length 2");
+            }
+
+        }
     }
 }
