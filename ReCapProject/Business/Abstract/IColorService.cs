@@ -6,12 +6,12 @@ using ReCapProject.Core.Utilities.Results;
 
 namespace ReCapProject.Business.Abstract
 {
-    public interface IBrandService
+    public interface IColorService
     {
-        IResult Add(Brand brand);
-        IResult Delete(Brand brand);
-        IResult Update(Brand brand);
-        IDataResult<List<Brand>> GetAll();
+        IResult Add(Color color);
+        IResult Delete(Color color);
+        IResult Update(Color color);
+        IDataResult<List<Color>> GetAll();
 
     }
 }

@@ -1,8 +1,8 @@
-﻿using ReCapProject.Entities.Abstract;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
+using ReCapProject.Core.Entities;
 
 
 namespace DataAccess.Abstract

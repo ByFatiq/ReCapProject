@@ -1,12 +1,14 @@
 ﻿using ReCapProject.Core.DataAccess;
 using ReCapProject.Entities.Concrete;
+using ReCapProject.Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ReCapProject.DataAccess.Abstract
 {
-    public interface IColorDal : IEntityRepository<Color>
+    public interface ICarDal : IEntityRepository<Car>
     {
+        List<CarDetailDto> GetCarDetails();
     }
 }

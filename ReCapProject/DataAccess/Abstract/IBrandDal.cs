@@ -1,10 +1,10 @@
-﻿using Entities.Concrete;
+﻿using ReCapProject.Core.DataAccess;
+using ReCapProject.Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using DataAccess.Abstract;
 
-namespace DataAccess.Abstract
+namespace ReCapProject.DataAccess.Abstract
 {
     public interface IBrandDal : IEntityRepository<Brand>
     {

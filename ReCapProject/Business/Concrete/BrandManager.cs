@@ -1,62 +1,43 @@
-﻿using Business.Abstract;
+﻿using ReCapProject.Business.Abstract;
+using ReCapProject.Business.Constants;
 using DataAccess.Abstract;
-using Entities.Concrete;
+using ReCapProject.Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using ReCapProject.Core.Utilities.Results;
+using ReCapProject.DataAccess.Abstract;
 
-namespace Business.Concrete
+namespace ReCapProject.Business.Concrete
 {
     public class BrandManager : IBrandService
     {
         IBrandDal _brandDal;
-
         public BrandManager(IBrandDal brandDal)
         {
             _brandDal = brandDal;
         }
 
-        public void Add(Brand item)
+        public IResult Add(Brand brand)
         {
-            if (item.BrandName.Length >= 2)
-            {
-                _brandDal.Add(item);
-            }
-            else
-            {
-                Console.WriteLine("[Description] must be min length 2");
-            }
-
+            _brandDal.Add(brand);
+            return new SuccessResult(Messages.BrandAddedSuccess);
         }
 
-        public void Delete(Brand item)
+        public IResult Delete(Brand brand)
         {
-            _brandDal.Delete(item);
+            _brandDal.Delete(brand);
+            return new SuccessResult(Messages.BrandDeletedSuccess);
         }
 
-        public List<Brand> GetAll()
+        public IDataResult<List<Brand>> GetAll()
         {
-            return _brandDal.GetAll();
+            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(), Messages.BrandGetAllSuccess);
         }
-
-        public Brand GetById(int brandId)
+        public IResult Update(Brand brand)
         {
-            return _brandDal.GetById(b => b.BrandId == brandId);
+            _brandDal.Update(brand);
+            return new SuccessResult(Messages.BrandUpdatedSuccess);
         }
-
-        public void Update(Brand item)
-        {
-            if (item.BrandName.Length >= 2)
-            {
-                _brandDal.Update(item);
-            }
-            else
-            {
-                Console.WriteLine("[Description] must be min length 2");
-            }
-        }
-
-
-
     }
 }

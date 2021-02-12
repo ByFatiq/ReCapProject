@@ -1,13 +1,23 @@
-﻿using Entities.Concrete;
+﻿using Core.Utilities.Results;
+using ReCapProject.Entities.Concrete;
+using ReCapProject.Entities.DTOs;
+using System;
 using System.Collections.Generic;
+using System.Text;
+using ReCapProject.Core.Utilities.Results;
 
-namespace Business.Abstract
+namespace ReCapProject.Business.Abstract
 {
     public interface ICarService
     {
-        List<CarJoin> GetAll();
-        List<Car> GetByColorId(int colorId);
-        List<Car> GetByBrandId(int brandId);
-        CarJoin GetByCarId(int carId);
+        IDataResult<List<Car>> GetAll();
+        IDataResult<List<Car>> GetCarsByBrandId(int id);
+        IDataResult<List<Car>> GetCarsByColorId(int id);
+        IResult Add(Car car);
+        IResult Delete(Car car);
+        IResult Update(Car car);
+
+        IDataResult<List<CarDetailDto>> GetCarDetails();
+
     }
 }

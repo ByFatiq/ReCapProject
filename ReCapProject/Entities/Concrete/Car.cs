@@ -1,9 +1,9 @@
-﻿using ReCapProject.Entities.Abstract;
+﻿using ReCapProject.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Entities.Concrete
+namespace ReCapProject.Entities.Concrete
 {
     public class Car : IEntity
     {
@@ -11,7 +11,8 @@ namespace Entities.Concrete
         public int BrandId { get; set; }
         public int ColorId { get; set; }
         public short ModelYear { get; set; }
-        public decimal DailyPrice { get; set; }
+        public int DailyPrice { get; set; }
         public string CarDescription { get; set; }
+
     }
 }

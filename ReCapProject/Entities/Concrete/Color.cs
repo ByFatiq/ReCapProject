@@ -1,9 +1,9 @@
-﻿using ReCapProject.Entities.Abstract;
+﻿using ReCapProject.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Entities.Concrete
+namespace ReCapProject.Entities.Concrete
 {
     public class Color : IEntity
     {
