@@ -1,10 +1,12 @@
-﻿using ReCapProject.Business.Concrete;
-using ReCapProject.DataAccess.Concrete.EntityFramework;
+﻿using ReCapProject.DataAccess.Concrete.EntityFramework;
 using ReCapProject.DataAccess.Concrete.InMemory;
 using ReCapProject.Entities.Concrete;
 using System;
+using System.Data.SqlTypes;
+using Business.Concrete;
+using ReCapProject.Business.Concrete;
 
-namespace ConsoleUI
+namespace ReCapProject.ConsoleUI
 {
     class Program
     {
@@ -18,13 +20,7 @@ namespace ConsoleUI
 
             Console.WriteLine("***EF Database'de olan arabalar CarDetailsDto'ya göre gösterildi***");
             //CarGetAll(carManager);
-            var data = carManager.GetAll();
-
-            foreach (var car in data.Data)
-            {
-                Console.WriteLine(car.CarDescription);
-            }
-            Console.WriteLine(data.Message);
+            Console.WriteLine(carManager.GetAll().Message);
 
             Console.WriteLine("\n***BrandId'a göre ve ColorId'ye göre getirme****");
             Console.WriteLine("*color'a göre");
@@ -50,6 +46,58 @@ namespace ConsoleUI
             //GetColors(colorManager);
             Console.WriteLine(colorManager.GetAll().Message);
 
+            Console.WriteLine("\n***Kullanıcılar Oluşturuldu***");
+
+            UserManager userManager = new UserManager(new EfUserDal());
+            //UsersTest(userManager);
+            Console.WriteLine(userManager.GetAll().Message);
+
+            Console.WriteLine("\n***Müşteriler Oluşturuldu***");
+
+            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+            //CustomersTest(customerManager);
+            Console.WriteLine(customerManager.GetAll().Message);
+           // CarTest(carManager);
+
+            Console.WriteLine("\n***Kiralama Oluşturuldu***");
+
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            RentalsTest(rentalManager);
+
+            var datasonuc = rentalManager.GetRentDetails().Data;
+
+            foreach (var rental in datasonuc )
+            {
+                //Console.WriteLine("rental id: " + rental.RentalId + " - car description:" + rental.CarDescription + " - company name:" + rental.CampanyName + " - rentdate:" + rental.RentDate + " - returndate:" + rental.ReturnDate);
+                Console.WriteLine($"rental id: {rental.RentalId}  - car description: {rental.CarDescription} - company name:{rental.CampanyName}- rentdate: { rental.RentDate} - returndate: { rental.ReturnDate}");
+
+            }
+
+
+        }
+
+        private static void RentalsTest(RentalManager rentalManager)
+        {
+   
+            Rental rental2 = new Rental() { Id = 1, CarId = 2, CustomerId = 1, RentDate = DateTime.Now };
+            Rental rental3 = new Rental() { Id = 2, CarId = 3, CustomerId = 1, RentDate = DateTime.Now };
+            Rental rental4 = new Rental() { Id = 3, CarId = 3, CustomerId = 1, RentDate = DateTime.Now, ReturnDate = DateTime.Today };
+            Rental rental5 = new Rental() { Id = 4, CarId = 6, CustomerId = 2, RentDate = DateTime.Now };
+            rentalManager.Add(rental5);
+        }
+
+        private static void CustomersTest(CustomerManager customerManager)
+        {
+            Customer customer1 = new Customer() { Id = 1, UserId = 1, CompanyName = "volkan şirketi" };
+            Customer customer2 = new Customer() { Id = 2, UserId = 2, CompanyName = "ali şirketi" };
+            customerManager.Add(customer2);
+        }
+
+        private static void UsersTest(UserManager userManager)
+        {
+            User user1 = new User() { Id = 1, FirstName = "volkan", LastName = "karaali", Email = "mail@mail.com", Password = "v123" };
+            User user2 = new User() { Id = 2, FirstName = "ali", LastName = "veli", Email = "mail1@mail.com", Password = "1234" };
+            userManager.Add(user2);
         }
 
         private static void GetColors(ColorManager colorManager)
@@ -144,9 +192,9 @@ private static CarManager InMemoryTest()
             Color color1 = new Color() { ColorId = 1, ColorName = "Siyah" };
             Color color2 = new Color() { ColorId = 2, ColorName = "Beyaz" };
             Color color3 = new Color() { ColorId = 3, ColorName = "Sarı" };
-            //colorManager.Add(color1);
-            //colorManager.Add(color2);
-            //colorManager.Add(color3);
+            colorManager.Add(color1);
+            colorManager.Add(color2);
+            colorManager.Add(color3);
 
             //Color color4 = new Color() { ColorId = 4, ColorName = "Laciverttt" };
             //colorManager.Add(color4);
@@ -165,16 +213,16 @@ private static CarManager InMemoryTest()
             Brand brand2 = new Brand() { BrandId = 2, BrandName = "BMW" };
             Brand brand3 = new Brand() { BrandId = 3, BrandName = "Mercedes" };
 
-            //brandManager.Add(brand1);
-            //brandManager.Add(brand2);
-            //brandManager.Add(brand3);
+            brandManager.Add(brand1);
+            brandManager.Add(brand2);
+            brandManager.Add(brand3);
 
-            //Brand brand4 = new Brand() { BrandId = 4, BrandName = "Opelz" };
+            //Brand brand4 = new Brand() { BrandId = 4, BrandName = "Opel" };
             //brandManager.Add(brand4);
-            Brand brand4 = new Brand() { BrandId = 4, BrandName = "Opel" };
+            //Brand brand4 = new Brand() { BrandId = 4, BrandName = "Opel" };
             //brandManager.Update(brand4);
 
-            Brand brand5 = new Brand() { BrandId = 5, BrandName = "Ford" };
+            //Brand brand5 = new Brand() { BrandId = 5, BrandName = "Ford" };
             //brandManager.Add(brand5);
             //brandManager.Delete(brand5);
 
@@ -183,16 +231,16 @@ private static CarManager InMemoryTest()
         private static void CarTest(CarManager carManager)
         {
             Car car1 = new Car() { CarId = 1, BrandId = 1, ColorId = 1, DailyPrice = 0, CarDescription = "a", ModelYear = 2000 };
-            //carManager.Add(car1);  kaydetmez.
-            Car car2 = new Car() { CarId = 2, BrandId = 1, ColorId = 1, DailyPrice = 3242352, CarDescription = "Yeni Gibi", ModelYear = 2021 };
+            //carManager.Add(car1); kaydetmez.
+           Car car2 = new Car() { CarId = 2, BrandId = 1, ColorId = 1, DailyPrice = 3242352, CarDescription = "sıfır", ModelYear = 2021 };
             Car car3 = new Car() { CarId = 5, BrandId = 2, ColorId = 3, DailyPrice = 2314343, CarDescription = "2.el", ModelYear = 2018 };
-            Car car4 = new Car() { CarId = 6, BrandId = 1, ColorId = 2, DailyPrice = 32454362, CarDescription = "Sıfır Araç", ModelYear = 2020 };
-            Car car5 = new Car() { CarId = 7, BrandId = 2, ColorId = 2, DailyPrice = 0, CarDescription = "Sıfır Araç", ModelYear = 2020 };
+            Car car4 = new Car() { CarId = 6, BrandId = 1, ColorId = 2, DailyPrice = 32454362, CarDescription = "son model araba", ModelYear = 2020 };
+            Car car5 = new Car() { CarId = 7, BrandId = 2, ColorId = 2, DailyPrice = 0, CarDescription = "son model araba", ModelYear = 2020 };
 
-            //carManager.Add(car2);
-            //carManager.Add(car3);
-            //carManager.Add(car4);
-            //carManager.Add(car5);
+            carManager.Add(car2);
+            carManager.Add(car3);
+            carManager.Add(car4);
+            carManager.Add(car5);
             //carManager.Add(car6);
 
             //carManager.Delete(car6);
