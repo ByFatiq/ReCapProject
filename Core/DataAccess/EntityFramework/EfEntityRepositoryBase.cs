@@ -60,6 +60,8 @@ namespace Core.DataAccess.EntityFramework
                 uptatedEntity.State = EntityState.Modified;
                 context.SaveChanges();
             }
+
+           
         }
     }
 }

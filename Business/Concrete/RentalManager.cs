@@ -7,6 +7,9 @@ using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 
 namespace Business.Concrete
 {
@@ -15,10 +18,16 @@ namespace Business.Concrete
         IRentalDal _rentalDal;
         public RentalManager(IRentalDal rentalDal)
         {
+
             _rentalDal = rentalDal;
         }
+
+        [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental rental)
         {
+
+            
+
             var customerCheck = _rentalDal.GetAll(p => p.CustomerId == rental.CustomerId);
 
             if (customerCheck.Count > 0)

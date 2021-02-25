@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -8,6 +11,8 @@ using Entities.Concrete;
 namespace Business.Concrete
 {
     public class BrandManager : IBrandService
+    //İş Kodları - Geçerlilik Şartlarını sağlıyor mu? Örneğin sınavdan 70 almış mı gibi.
+    //Validation Doğrulama Kodları;
     {
         IBrandDal _brandDal;
         public BrandManager(IBrandDal brandDal)
@@ -15,8 +20,12 @@ namespace Business.Concrete
             _brandDal = brandDal;
         }
 
-        public IResult Add(Brand brand)
+        [ValidationAspect(typeof(BrandValidator))]
+        public IResult Add(Brand brand) //Yeni Markayı eklerken minimum max kaç karakter olacağı, şu şuna uymalı ilk harf büyük olmalı gibi.
         {
+           
+
+
             _brandDal.Add(brand);
             return new SuccessResult(Messages.BrandAddedSuccess);
         }

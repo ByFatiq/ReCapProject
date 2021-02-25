@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Business.Abstract;
 using Business.Concrete;
@@ -35,8 +36,22 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(User user)
+        public IActionResult Delete(User user) //User sınıfı verilerek data siler.
         {
+
+            var result = _userService.Delete(user);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+
+        [HttpPost("deletebyid")]
+        public IActionResult Delete(int userId) // UserId verilerek tamamını siler.
+        {
+            var user = _userService.GetById(userId).Data;
             var result = _userService.Delete(user);
             if (result.Success)
             {
