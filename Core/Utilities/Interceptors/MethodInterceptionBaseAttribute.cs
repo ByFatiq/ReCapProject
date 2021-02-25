@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Castle.DynamicProxy;
-using IInterceptor = Microsoft.EntityFrameworkCore.Diagnostics.IInterceptor;
+
 
 namespace Core.Utilities.Interceptors
 {
